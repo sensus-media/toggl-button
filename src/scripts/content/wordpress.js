@@ -21,7 +21,8 @@ togglbutton.render('.edit-post-header:not(.toggl)', { observe: true }, function 
 ) {
   const targetElement = elem.querySelector('.edit-post-header__settings');
   const description = function () {
-    return document.getElementById('post-title-0').value;
+    const titleInput = document.getElementById('post-title-0');
+    return titleInput ? titleInput.value : '';
   };
 
   const link = togglbutton.createTimerLink({
