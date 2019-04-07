@@ -24,7 +24,7 @@ export default function LoginPage ({ source }: LoginProps) {
     );
   } else if (source === 'web-login') {
     content = (
-      <a href="settings.html">
+      <a href="settings.html?tab=account">
         <Button>Open Settings</Button>
       </a>
     );
