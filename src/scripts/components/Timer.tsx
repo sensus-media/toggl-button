@@ -50,12 +50,13 @@ function RunningTimer(props: { entry: TimeEntry, project: Project | null }) {
   };
   const stopTimer = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     window.PopUp.sendMessage({ type: 'stop', service: 'dropdown', respond: true });
   };
 
   return (
-    <TimerContainer>
-      <TimerDescription title={`Click to edit ${entry.description || ''}`} onClick={editEntry} running>
+    <TimerContainer onClick={editEntry}>
+      <TimerDescription title={`Click to edit ${entry.description || ''}`} running>
         {entry.description || NO_DESCRIPTION}
       </TimerDescription>
       {project &&
@@ -116,14 +117,15 @@ const TimerContainer = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
-
-  box-shadow: rgb(232, 232, 232) 0px -1px 0px 0px inset;
   align-items: center;
-  padding: .5rem .8rem;
-  box-sizing: border-box;
-  background: #fff;
   margin-bottom: 1rem;
   height: 50px;
+
+  padding: .5rem .8rem;
+
+  cursor: pointer;
+  box-shadow: rgb(232, 232, 232) 0px -1px 0px 0px inset;
+  background: #fff;
 `;
 
 const TimerDescription = styled.div`
