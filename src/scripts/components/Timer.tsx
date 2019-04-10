@@ -9,6 +9,8 @@ import {
 } from 'date-fns';
 import * as keycode from 'keycode';
 
+import { ProjectLargeDot } from '../@toggl/ui/icons';
+import TagsIcon from './TagsIcon';
 import start from '../icons/start.svg';
 import stop from '../icons/stop.svg';
 
@@ -29,16 +31,19 @@ export const formatDuration = (start: string | number, stop?: string | number) =
 
 type TimerProps = {
   entry: TimeEntry | null;
+  project: Project | null;
 };
 
 function Timer (props: TimerProps) {
   return props.entry
-    ? <RunningTimer entry={props.entry} />
+    ? <RunningTimer entry={props.entry} project={props.project} />
     : <TimerForm />
 }
 
-function RunningTimer(props: { entry: TimeEntry }) {
-  const { entry } = props;
+function RunningTimer(props: { entry: TimeEntry, project: Project | null }) {
+  const { entry, project } = props;
+  const tags = (entry.tags || []).join(', ');
+
   const editEntry = (e) => {
     e.preventDefault();
     window.PopUp.updateEditForm(window.PopUp.$editView);
@@ -53,6 +58,14 @@ function RunningTimer(props: { entry: TimeEntry }) {
       <TimerDescription title={`Click to edit ${entry.description || ''}`} onClick={editEntry} running>
         {entry.description || NO_DESCRIPTION}
       </TimerDescription>
+      {project &&
+        <TimerProject>
+          <ProjectLargeDot color={project.hex_color}>
+            <span>{project.name}</span>
+          </ProjectLargeDot>
+        </TimerProject>
+      }
+      {tags && <TagsIcon title={tags} />}
       <TimerDuration start={entry.start} />
       <TimerButton isRunning onClick={stopTimer} />
     </TimerContainer>
@@ -114,17 +127,24 @@ const TimerContainer = styled.div`
 `;
 
 const TimerDescription = styled.div`
-  display: flex;
-  align-items: center;
+  flex: 1;
   height: 100%;
 
-  flex: 1;
+  line-height: 34px;
+  padding-right: 1rem;
+  align-items: center;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 
   font-size: 14px;
   cursor: ${(props: { running?: boolean }) => props.running ? 'pointer' : 'initial'};
+`;
+
+const TimerProject = styled.div`
+  margin-right: 10px;
+  font-size: 14px;
+  flex: 1;
 `;
 
 const TimerInput = styled.input`
