@@ -471,6 +471,10 @@ export default {
     url: '*://sprint.ly/*',
     name: 'Sprintly'
   },
+  'stackfield.com': {
+    url: '*://*.stackfield.com/*',
+    name: 'Stackfield'
+  },
   'taiga.io': {
     url: '*://*.taiga.io/*',
     name: 'Taiga'
